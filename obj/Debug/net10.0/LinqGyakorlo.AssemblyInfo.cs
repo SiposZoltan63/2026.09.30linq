@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LinqGyakorlo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+076b37235861fe087026e1412df2e982359b4e20")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1b63e16a17cf3bfc2ba76adcf1278f69692c1219")]
 [assembly: System.Reflection.AssemblyProductAttribute("LinqGyakorlo")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LinqGyakorlo")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -451,19 +451,42 @@ namespace LinqGyakorlo
         // 32. Az első 3 utáni hallgatók (Skip).
         static void Feladat32()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            var masodikMogottiek = SampleData.Students.OrderByDescending(s => s.GradeAverage).Skip(3);
+            foreach (var item in masodikMogottiek)
+            {
+                Console.WriteLine(item);
+            }
         }
 
         // 33. Életkor szerint rendezve: TakeWhile (21 évnél fiatalabbak), majd SkipWhile (a többi).
         static void Feladat33()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            var rendezett = SampleData.Students.OrderBy(s => s.Age);
+
+            Console.WriteLine("21 évnél fiatalabbak (TakeWhile):");
+            foreach (var item in rendezett.TakeWhile(s => s.Age < 21)) Console.WriteLine("  " + item.Name + " - " + item.Age);
+
+            Console.WriteLine("A többiek (SkipWhile):");
+            foreach (var item in rendezett.SkipWhile(s => s.Age < 21)) Console.WriteLine("  " + item.Name + " - " + item.Age);
         }
 
         // 34. Hallgatók felbontása 4 fős csoportokra (Chunk).
         static void Feladat34()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            var csopotok = SampleData.Students.Chunk(4);
+            int csopoNum = 1;
+
+            foreach (var csoport in csopotok)
+            {
+                Console.WriteLine($"--- {csopoNum++}. csoport ---");
+                foreach (var s in csoport)
+                {
+                    Console.WriteLine(s.Name);
+                }
+            }
         }
 
         // ---------- 10. Egyéb — Any, All, Contains, ToDictionary, ToHashSet, DefaultIfEmpty ----------
@@ -471,37 +494,63 @@ namespace LinqGyakorlo
         // 35. Van-e hallgató 2.5 alatti átlaggal (Any).
         static void Feladat35()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            bool vanGyenge = SampleData.Students.Any(s => s.GradeAverage < 2.5);
+            Console.WriteLine($"Van 2.5 alatti átlagú hallgató: {vanGyenge}");
         }
 
         // 36. Minden hallgató 18 évesnél idősebb-e (All).
         static void Feladat36()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            bool mindNagykoru = SampleData.Students.All(s => s.Age >= 18);
+            Console.WriteLine($"Minden hallgató legalább 18 éves: {mindNagykoru}");
         }
 
         // 37. Szerepel-e "Pécs" a városok között (Contains).
         static void Feladat37()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            var varosok = SampleData.Students.Select(s => s.City);
+            bool vanPecs = varosok.Contains("Pécs");
+            Console.WriteLine($"Szerepel Pécs a városok között: {vanPecs}");
         }
 
         // 38. Dictionary<int, string> a hallgatók Id-je és neve alapján (ToDictionary).
         static void Feladat38()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            Dictionary<int, string> diakSzotar = SampleData.Students.ToDictionary(s => s.Id, s => s.Name);
+            foreach (var kvp in diakSzotar)
+            {
+                Console.WriteLine($"ID: {kvp.Key} -> Név: {kvp.Value}");
+            }
         }
 
         // 39. HashSet<string> a kurzuskategóriákból (ToHashSet).
         static void Feladat39()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            HashSet<string> kategoriak = SampleData.Courses.Select(c => c.Category).ToHashSet();
+            foreach (var kat in kategoriak)
+            {
+                Console.WriteLine(kat);
+            }
         }
 
         // 40. Nem létező kurzushoz tartozó beiratkozások, DefaultIfEmpty kezeléssel.
         static void Feladat40()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            int nemLetezoCourseId = 9999;
+            var result = SampleData.Enrollments
+                .Where(e => e.CourseId == nemLetezoCourseId)
+                .DefaultIfEmpty();
+
+            foreach (var item in result)
+            {
+                Console.WriteLine(item == null ? "Nincs találat (default null elem)" : item.ToString());
+            }
         }
     }
 }
