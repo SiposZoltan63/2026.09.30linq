@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\linqgyak\\LinqGyakorlo\\LinqGyakorlo.csproj": {}
+    "C:\\Users\\sipos\\source\\repos\\2026.09.30linq\\LinqGyakorlo.csproj": {}
   },
   "projects": {
-    "C:\\linqgyak\\LinqGyakorlo\\LinqGyakorlo.csproj": {
+    "C:\\Users\\sipos\\source\\repos\\2026.09.30linq\\LinqGyakorlo.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\linqgyak\\LinqGyakorlo\\LinqGyakorlo.csproj",
+        "projectUniqueName": "C:\\Users\\sipos\\source\\repos\\2026.09.30linq\\LinqGyakorlo.csproj",
         "projectName": "LinqGyakorlo",
-        "projectPath": "C:\\linqgyak\\LinqGyakorlo\\LinqGyakorlo.csproj",
-        "packagesPath": "C:\\Users\\siposz\\.nuget\\packages\\",
-        "outputPath": "C:\\linqgyak\\LinqGyakorlo\\obj\\",
+        "projectPath": "C:\\Users\\sipos\\source\\repos\\2026.09.30linq\\LinqGyakorlo.csproj",
+        "packagesPath": "C:\\Users\\sipos\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\sipos\\source\\repos\\2026.09.30linq\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\siposz\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\sipos\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

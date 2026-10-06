@@ -223,19 +223,59 @@ namespace LinqGyakorlo
         // 15. Enrollments + Students Join: hallgató neve minden beiratkozáshoz.
         static void Feladat15()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            var result = SampleData.Enrollments.Join(
+                SampleData.Students,
+                e => e.StudentId,
+                s => s.Id,
+                (e, s) => new { Tanulónév = s.Name, e.CourseId, e.Grade }
+            );
+            foreach (var item in result)
+            {
+                Console.WriteLine(item);
+            }
         }
 
         // 16. Háromtáblás Join: hallgató neve, kurzus neve, érdemjegy.
         static void Feladat16()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            var result = SampleData.Enrollments
+                .Join(SampleData.Students, e => e.StudentId, s => s.Id, (e, s) => new { e, s })
+                .Join(SampleData.Courses, es => es.e.CourseId, c => c.Id, (es, c) => new {
+                    Tanulónév = es.s.Name,
+                    Kurzusnév = c.Name,
+                    Jegy = es.e.Grade
+                });
+
+            foreach (var item in result)
+            {
+                Console.WriteLine(item);
+            }
         }
 
         // 17. GroupJoin: hallgatónként a beiratkozásai (azok is, akiknek nincs).
         static void Feladat17()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            var result = SampleData.Students.GroupJoin(
+                SampleData.Enrollments,
+                s => s.Id,
+                e => e.StudentId,
+                (s, enrollments) => new {
+                    Tanulónév = s.Name,
+                    Beiratkozások = enrollments
+                }
+            );
+
+            foreach (var item in result)
+            {
+                Console.WriteLine($"Hallgató: {item.Tanulónév}");
+                foreach (var e in item.Beiratkozások)
+                {
+                    Console.WriteLine($"  - Kurzus ID: {e.CourseId}, Jegy: {e.Grade}");
+                }
+            }
         }
 
         // ---------- 6. Halmazműveletek — Distinct, Union, Intersect, Except, Concat, Zip ----------
@@ -243,31 +283,68 @@ namespace LinqGyakorlo
         // 18. Hány különböző város van a hallgatók között (Distinct).
         static void Feladat18()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            var result = SampleData.Students.Select(s => s.City).Distinct();
+            foreach (var item in result)
+            {
+                Console.WriteLine(item);
+            }
         }
 
         // 19. Különböző kurzuskategóriák (Distinct).
         static void Feladat19()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            var result = SampleData.Courses.Select(c => c.Category).Distinct();
+            foreach (var item in result)
+            {
+                Console.WriteLine(item);
+            }
         }
 
         // 20. Union, Intersect, Except a "kiváló" (átlag >= 4.5) és "budapesti" hallgatók nevei között.
         static void Feladat20()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            var kivalo = SampleData.Students.Where(s => s.GradeAverage >= 4.5).Select(s => s.Name);
+            var budapesti = SampleData.Students.Where(s => s.City == "Budapest").Select(s => s.Name);
+
+            Console.WriteLine("Unió (kiváló VAGY budapesti):");
+            foreach (var item in kivalo.Union(budapesti)) Console.WriteLine("  " + item);
+
+            Console.WriteLine("Metszet (kiváló ÉS budapesti):");
+            foreach (var item in kivalo.Intersect(budapesti)) Console.WriteLine("  " + item);
+
+            Console.WriteLine("Különbség (kiváló, DE NEM budapesti):");
+            foreach (var item in kivalo.Except(budapesti)) Console.WriteLine("  " + item);
         }
 
         // 21. Concat: Matematika + Informatika kurzusnevek.
         static void Feladat21()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            var matek = SampleData.Courses.Where(c => c.Category == "Matematika").Select(c => c.Name);
+            var info = SampleData.Courses.Where(c => c.Category == "Informatika").Select(c => c.Name);
+
+            var result = matek.Concat(info);
+            foreach (var item in result)
+            {
+                Console.WriteLine(item);
+            }
         }
 
         // 22. Zip: első 4 hallgató neve + első 4 kurzus neve párban.
         static void Feladat22()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            var hallgatok = SampleData.Students.Take(4).Select(s => s.Name);
+            var kurzusok = SampleData.Courses.Take(4).Select(c => c.Name);
+
+            var result = hallgatok.Zip(kurzusok, (h, k) => $"{h} -> {k}");
+            foreach (var item in result)
+            {
+                Console.WriteLine(item);
+            }
         }
 
         // ---------- 7. Aggregálás — Count, Sum, Average, Min, Max, Aggregate ----------
@@ -275,31 +352,50 @@ namespace LinqGyakorlo
         // 23. Hallgatók száma összesen, illetve akiknek átlaga > 4.0 (Count).
         static void Feladat23()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            int osszes = SampleData.Students.Count();
+            int negyFeletti = SampleData.Students.Count(s => s.GradeAverage > 4.0);
+
+            Console.WriteLine($"Összes hallgató: {osszes}");
+            Console.WriteLine($"4.0 feletti átlagúak: {negyFeletti}");
         }
 
         // 24. Az összes kurzus kredit-összege (Sum).
         static void Feladat24()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            int osszKredit = SampleData.Courses.Sum(c => c.Credit);
+            Console.WriteLine($"Összes kredit: {osszKredit}");
         }
 
         // 25. Hallgatók átlagéletkora (Average).
         static void Feladat25()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            double atlagKor = SampleData.Students.Average(s => s.Age);
+            Console.WriteLine($"Átlagéletkor: {atlagKor:F2}");
         }
 
         // 26. Legfiatalabb és legidősebb hallgató életkora (Min, Max).
         static void Feladat26()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            int minKor = SampleData.Students.Min(s => s.Age);
+            int maxKor = SampleData.Students.Max(s => s.Age);
+
+            Console.WriteLine($"Legfiatalabb: {minKor} év");
+            Console.WriteLine($"Legidősebb: {maxKor} év");
         }
 
         // 27. Aggregate: hallgatónevek vesszővel elválasztva egy stringbe.
         static void Feladat27()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            var result = SampleData.Students
+                .Select(s => s.Name)
+                .Aggregate((current, next) => current + ", " + next);
+
+            Console.WriteLine(result);
         }
 
         // ---------- 8. Elemkiválasztás — First, Last, Single, ElementAt ----------
@@ -307,20 +403,36 @@ namespace LinqGyakorlo
         // 28. Első szegedi hallgató (First/FirstOrDefault).
         static void Feladat28()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            var elsoSzegedi = SampleData.Students.FirstOrDefault(s => s.City == "Szeged");
+            Console.WriteLine(elsoSzegedi != null ? elsoSzegedi.Name : "Nincs szegedi hallgató.");
         }
 
         // 29. Az egyetlen "Lakatos Kata" nevű hallgató (Single/SingleOrDefault),
         //     majd egy olyan eset kipróbálása try-catch-csel, ahol több találat van.
         static void Feladat29()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            var kata = SampleData.Students.SingleOrDefault(s => s.Name == "Lakatos Kata");
+            Console.WriteLine($"Találat: {kata?.Name}");
+
+            try
+            {
+                // Szándékosan hibára futunk: több hallgató átlaga is > 3.0
+                var tobbTalalat = SampleData.Students.Single(s => s.GradeAverage > 3.0);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine($"Kivétel elkapva (Single hibára futott): {ex.Message}");
+            }
         }
 
         // 30. A 3. indexű (0-tól) hallgató (ElementAt).
         static void Feladat30()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            var harmadikIndexu = SampleData.Students.ElementAtOrDefault(3);
+            Console.WriteLine($"A 3. indexű hallgató: {harmadikIndexu?.Name}");
         }
 
         // ---------- 9. Particionálás — Skip, Take, SkipWhile, TakeWhile, Chunk ----------
@@ -328,7 +440,12 @@ namespace LinqGyakorlo
         // 31. TOP 3 hallgató átlag szerint (Take).
         static void Feladat31()
         {
-            // TODO
+            Console.WriteLine("--------------------------------------------------");
+            var top3 = SampleData.Students.OrderByDescending(s => s.GradeAverage).Take(3);
+            foreach (var item in top3)
+            {
+                Console.WriteLine(item);
+            }
         }
 
         // 32. Az első 3 utáni hallgatók (Skip).
